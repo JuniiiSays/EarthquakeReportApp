@@ -14,9 +14,17 @@ This android app displays a list of recent earthquakes in the world from the U.S
 
 ## Application Features & Implements
   ##### Json Parsing
+  -
+  -
+  -
   ##### HTTP Networking
+  -
+  -
+  -
   ##### Thread & Parallelism
-
+  -
+  -
+  -
 
 How to use this repository
 --------------
