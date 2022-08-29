@@ -12,11 +12,17 @@
         android:layout_weight="1"
         android:text="7.6"/>
     <TextView
-        android:id="@+id/city_text_view"
+        android:id="@+id/location_offset"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="San Francisco, CA"/>
+        tools:text="88Km N of"/>
+    <TextView
+        android:id="@+id/primary_location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Yelizovo, Russia"/>
     <TextView
         android:id="@+id/date_text_view"
         android:layout_width="0dp"
