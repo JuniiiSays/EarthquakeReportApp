@@ -12,7 +12,7 @@ class Earthquake {
         mTimeInMilliSeconds = timeInMilliSeconds;
     }
 
-    public double getMag() {
+    public double getMagnitude() {
         return mMag;
     }
 
