@@ -4,23 +4,23 @@ class Earthquake {
 
     private String mMag;
     private String mCityName;
-    private String mDate;
+    private long mTimeInMilliSeconds;
 
-    public Earthquake(String mag, String cityName, String date) {
+    public Earthquake(String mag, String cityName, long timeInMilliSeconds) {
         mMag = mag;
         mCityName = cityName;
-        mDate = date;
+        mTimeInMilliSeconds = timeInMilliSeconds;
     }
 
-    public String getmMag() {
+    public String getMag() {
         return mMag;
     }
 
-    public String getmCityName() {
+    public String getCityName() {
         return mCityName;
     }
 
-    public String getmDate() {
-        return mDate;
+    public long getDateInMilliSeconds() {
+        return mTimeInMilliSeconds;
     }
 }

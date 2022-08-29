@@ -11,7 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
     public EarthquakeAdapter(Activity context, ArrayList<Earthquake> earthquakes) {
@@ -32,12 +34,31 @@ class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         TextView magTextView = (TextView) listViewItem.findViewById(R.id.mag_text_view);
         TextView cityTextView = (TextView) listViewItem.findViewById(R.id.city_text_view);
         TextView dateTextView = (TextView) listViewItem.findViewById(R.id.date_text_view);
+        TextView timeTetView = (TextView) listViewItem.findViewById(R.id.time_text_view);
 
-        magTextView.setText(currentEarthquake.getmMag());
-        cityTextView.setText(currentEarthquake.getmCityName());
-        dateTextView.setText(currentEarthquake.getmDate());
+
+        magTextView.setText(currentEarthquake.getMag());
+        cityTextView.setText(currentEarthquake.getCityName());
+
+        Date dateObject = new Date(currentEarthquake.getDateInMilliSeconds());
+
+        String formattedDate = formatDate(dateObject);
+        String formattedTime = formatTime(dateObject);
+
+        dateTextView.setText(formattedDate);
+        timeTetView.setText(formattedTime);
 
         return listViewItem;
+    }
+
+    private String formatDate(Date dateObject){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("LLL dd, yyyy");
+        return simpleDateFormat.format(dateObject);
+    }
+
+    private String formatTime(Date dateObject){
+        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("h:mm a");
+        return simpleTimeFormat.format(dateObject);
     }
 }
 
