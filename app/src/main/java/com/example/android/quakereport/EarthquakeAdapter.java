@@ -45,14 +45,10 @@ class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
 
         double magnitude = currentEarthquake.getMag();
-
-        DecimalFormat formatter = new DecimalFormat("0.00");
-        String formattedMagnitude = formatter.format(magnitude);
-
+        String formattedMagnitude = formatMagnitude(magnitude);
         magnitudeTextView.setText(formattedMagnitude);
 
         String originalLocation  = currentEarthquake.getLocation();
-
         if (originalLocation.contains(LOCATION_SEPARATOR)){
             String[] parts = originalLocation.split(LOCATION_SEPARATOR);
             locationOffset = parts[0] + LOCATION_SEPARATOR;
@@ -61,15 +57,12 @@ class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
             locationOffset = getContext().getString(R.string.near_the);
             primaryLocation = originalLocation;
         }
-
         offSetTextView.setText(locationOffset);
         primaryLocationTextView.setText(primaryLocation);
 
         Date dateObject = new Date(currentEarthquake.getDateInMilliSeconds());
-
         String formattedDate = formatDate(dateObject);
         String formattedTime = formatTime(dateObject);
-
         dateTextView.setText(formattedDate);
         timeTetView.setText(formattedTime);
 
@@ -84,6 +77,11 @@ class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
     private String formatTime(Date dateObject){
         SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("h:mm a");
         return simpleTimeFormat.format(dateObject);
+    }
+
+    private String formatMagnitude(double magnitude){
+        DecimalFormat magnitudeFormat = new DecimalFormat("0.0");
+        return magnitudeFormat.format(magnitude);
     }
 }
 
