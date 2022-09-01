@@ -25,6 +25,9 @@ This android app displays a list of recent earthquakes in the world from the U.S
   -
   -
   -
+  #### Loaders
+  -
+  -
 
 How to use this repository
 --------------
