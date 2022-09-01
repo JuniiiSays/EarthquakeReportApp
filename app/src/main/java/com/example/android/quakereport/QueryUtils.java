@@ -6,6 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -93,6 +96,45 @@ class QueryUtils {
             Log.e(LOG_TAG, "Problem with Creating Url ", e);
         }
         return url;
+    }
+
+    private static String makeHttpRequest(URL url) throws IOException {
+        String jsonResponse = "";
+
+        if (url == null){
+            return null;
+        }
+
+        HttpURLConnection urlConnection = null;
+        InputStream inputStream = null;
+
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(10000)/*milliseconds*/;
+            urlConnection.setConnectTimeout(15000)/*milliseconds*/;
+            urlConnection.connect();
+
+            if (urlConnection.getResponseCode() == 200){
+                inputStream = urlConnection.getInputStream();
+                jsonResponse = readFromStream(inputStream);
+            } else {
+                Log.e(LOG_TAG, "Error Response code: " + urlConnection.getResponseCode());
+            }
+        } catch (IOException e){
+            Log.e(LOG_TAG, "Problem retrieving the earthquake JSON results.", e);
+        } finally {
+            if (urlConnection != null){
+                urlConnection.disconnect();
+            }
+            if (inputStream != null){
+                inputStream.close();
+            }
+        }
+
+        return jsonResponse;
+    }
+
+    private static String readFromStream(InputStream inputStream) {
     }
 
 }
