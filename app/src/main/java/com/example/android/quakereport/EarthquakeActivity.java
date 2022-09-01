@@ -37,7 +37,7 @@ public class EarthquakeActivity extends AppCompatActivity {
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
     /** URL for earthquake data from the USGS dataset */
     private static final String USGS_REQUEST_URL =
-            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=4&limit=100";
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=5&limit=50";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +47,6 @@ public class EarthquakeActivity extends AppCompatActivity {
         // Start the AsyncTask to fetch the earthquake data
         EarthquakeAsyncTask task = new EarthquakeAsyncTask();
         task.execute(USGS_REQUEST_URL);
-
-        /*Earthquake e = new Earthquake("7.2","Karachi","28-08-2022");
-        earthquakes.add(e);
-        earthquakes.add(new Earthquake("7.0", "Lahore", "28-08-2022"));
-        earthquakes.add(new Earthquake("7.0", "Islamabad", "28-08-2022"));
-        earthquakes.add(new Earthquake("7.0", "Khan Pur", "28-08-2022"));
-        earthquakes.add(new Earthquake("7.0", "Sadiqa Bad", "28-08-2022"));
-        earthquakes.add(new Earthquake("7.0", "Liaqat Pur", "28-08-2022"));
-        earthquakes.add(new Earthquake("7.0", "Tranda Sawaye Khan", "28-08-2022"));
-        earthquakes.add(new Earthquake("7.0", "Kot Samaba", "28-08-2022"));*/
 
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
