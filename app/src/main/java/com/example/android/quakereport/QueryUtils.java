@@ -18,6 +18,7 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 class QueryUtils {
 
@@ -46,13 +47,40 @@ class QueryUtils {
     }
 
     /**
+     * Query the USGS dataset and return a list of {@link Earthquake} objects.
+     */
+    public static List<Earthquake> fetchEarthquakeData(String requestUrl) {
+        // Create URL object
+        URL url = createUrl(requestUrl);
+
+        // Perform HTTP request to the URL and receive a JSON response back
+        String jsonResponse = null;
+        try {
+            jsonResponse = makeHttpRequest(url);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
+        }
+
+        // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
+        List<Earthquake> earthquakes = extractFeatureFromJson(jsonResponse);
+
+        // Return the list of {@link Earthquake}s
+        return earthquakes;
+    }
+
+    /**
      * Return a list of {@link Earthquake} objects that has been built up from
      * parsing a JSON response.
      */
-    public static ArrayList<Earthquake> extractEarthquakes() {
+    public static List<Earthquake> extractFeatureFromJson(String earthquakeJSON) {
+
+        // If the JSON string is empty or null, then return early.
+        if (TextUtils.isEmpty(earthquakeJSON)) {
+            return null;
+        }
 
         // Create an empty ArrayList that we can start adding earthquakes to
-        ArrayList<Earthquake> earthquakes = new ArrayList<>();
+        List<Earthquake> earthquakes = new ArrayList<>();
 
         // Try to parse the SAMPLE_JSON_RESPONSE. If there's a problem with the way the JSON
         // is formatted, a JSONException exception object will be thrown.
@@ -63,7 +91,7 @@ class QueryUtils {
             // build up a list of Earthquake objects with the corresponding data.
 
             //Convert the String into a Live JSONObject
-            JSONObject root = new JSONObject(SAMPLE_JSON_RESPONSE);
+            JSONObject root = new JSONObject(earthquakeJSON);
             JSONArray featuresArray = root.getJSONArray("features");
             for (int i = 0; i <= featuresArray.length(); i++){
                 JSONObject currentEarthquakeObject = featuresArray.getJSONObject(i);
@@ -94,7 +122,7 @@ class QueryUtils {
     /**
      * Returns new URL object from the given string URL.
      */
-    private static URL createURL(String stringUrl){
+    private static URL createUrl(String stringUrl){
         URL url = null;
         try {
             url = new URL(stringUrl);
@@ -159,5 +187,4 @@ class QueryUtils {
 
         return output.toString();
     }
-
 }
