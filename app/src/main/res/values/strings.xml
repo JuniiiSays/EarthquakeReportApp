@@ -20,4 +20,5 @@
 
     <!-- Text to display in the list when there are no earthquakes [CHAR LIMIT=NONE] -->
     <string name="no_earthquakes">No earthquakes found.</string>
+    <string name="no_internet">No Internet Connection.</string>
 </resources>

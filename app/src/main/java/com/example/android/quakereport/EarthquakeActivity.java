@@ -15,7 +15,10 @@
  */
 package com.example.android.quakereport;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -43,7 +46,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
     /** URL for earthquake data from the USGS dataset */
     private static final String USGS_REQUEST_URL =
-            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=4&limit=1000";
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=4";
 
     private static final int EARTHQUAKE_LOADER_ID = 1;
 
@@ -85,9 +88,18 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
             }
         });
 
-        LoaderManager loaderManager = getSupportLoaderManager();
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+            getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if(networkInfo != null && networkInfo.isConnected()){
+            LoaderManager loaderManager = getSupportLoaderManager();
+            loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
+        } else {
+            mProgressBar.setVisibility(View.GONE);
+            mEmptyStateTextView.setText(R.string.no_internet);
+        }
 
-        loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
+
 
     }
 
