@@ -17,6 +17,7 @@ package com.example.android.quakereport;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -27,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,7 +52,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
     /** URL for earthquake data from the USGS dataset */
     private static final String USGS_REQUEST_URL =
-            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=4";
+            "https://earthquake.usgs.gov/fdsnws/event/1/query";
 
     private static final int EARTHQUAKE_LOADER_ID = 1;
 
@@ -110,7 +112,20 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     @Override
     public Loader<List<Earthquake>> onCreateLoader(int id, Bundle bundle) {
         // TODO: Create a new loader for the given URL
-        return new EarthquakeLoader(this, USGS_REQUEST_URL);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String minMagnitude = sharedPreferences.getString(
+                getString(R.string.settings_min_magnitude_key),
+                getString(R.string.settings_min_magnitude_default));
+        Uri baseUri = Uri.parse(USGS_REQUEST_URL);
+        Uri.Builder urBuilder = baseUri.buildUpon();
+
+        urBuilder.appendQueryParameter("format","geojson");
+        urBuilder.appendQueryParameter("limit","10");
+        urBuilder.appendQueryParameter("minmag", minMagnitude);
+        urBuilder.appendQueryParameter("orderby","time");
+
+        return new EarthquakeLoader(this, urBuilder.toString());
     }
 
     @Override
